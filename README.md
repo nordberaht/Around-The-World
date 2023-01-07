@@ -11,3 +11,5 @@
 This project serves people by providing basic informations about the countries they're interested in.
 
 ### Description
+
+Desktop-first approach
