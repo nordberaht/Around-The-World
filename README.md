@@ -2,9 +2,15 @@
 
 ## Technologies
 
-*HTML
-*CSS
-\*Vanilla JavaScript
+-HTML
+-CSS
+-Vanilla JavaScript
+
+## Used APIs
+
+-REST Countries (https://restcountries.com/)
+
+## Used Libaries
 
 ## Purpose
 
@@ -12,4 +18,4 @@ This project serves people by providing basic informations about the countries t
 
 ### Description
 
-Desktop-first approach
+Desktop-first approach project built in MVC architecture.

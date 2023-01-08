@@ -20,8 +20,9 @@
     <title>Around the World</title>
   </head>
   <body>
-    <header>
-      <div class="header-container">
+    <!-- ENTRY PAGE -->
+    <div class="entry_page">
+      <div class="entry_page--container">
         <h1 class="heading">Around the World</h1>
         <div class="btn--container">
           <span
@@ -29,15 +30,42 @@
             aria-label="bottom button border visibility"
             class="btn-before"
           ></span>
-          <button class="btn btn-header">start your journey</button>
+          <button class="btn btn-entry_page">start your journey</button>
         </div>
-        <ion-icon name="earth-outline" class="header-icon" />
+        <ion-icon name="earth-outline" class="globe-icon" />
       </div>
-    </header>
-    <main>
-      <button>O</button>
-      <input type="text" />
-    </main>
+    </div>
+
+    <!-- PAGE -->
+    <div class="main_page">
+      <header class="header">
+        <img src="./src/img/paperplane.png" alt="" class="header_img" />
+        <button class="btn btn-localization">
+          <ion-icon class="location-icon" name="locate-outline"></ion-icon>
+        </button>
+        <div class="search_bar">
+          <input class="search_bar-input" type="text" maxlength="40" />
+          <button class="btn search_bar-button">Search</button>
+        </div>
+      </header>
+
+      <section class="main_container">
+        <aside>
+          <ul class="countries_list">
+            <li class="country_card">
+              <img src="https://flagcdn.com/gd.svg" alt="" />
+              <h3 class="country_card-name">United States Of America</h3>
+            </li>
+            <li class="country_card">
+              <img src="https://flagcdn.com/gd.svg" alt="" />
+              <h3 class="country_card-name">Grenada</h3>
+            </li>
+          </ul>
+          <footer></footer>
+        </aside>
+        <main></main>
+      </section>
+    </div>
 
     <!-- IONICONS -->
     <script
