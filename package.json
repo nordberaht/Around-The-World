@@ -2,7 +2,6 @@
   "name": "around-the-world",
   "version": "1.0.0",
   "description": "Travel application",
-  "main": "index.html",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
@@ -10,6 +9,10 @@
   "author": "Norbert Stomal",
   "license": "ISC",
   "dependencies": {
+    "ionicons": "^6.0.4",
+    "leaflet": "^1.9.3"
+  },
+  "devDependencies": {
     "parcel": "^2.8.2"
   }
 }
