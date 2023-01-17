@@ -12,6 +12,8 @@ const listCountries = listOfAllCountries.children;
 
 const countryStats = document.querySelector('.country-stats');
 
+const locationButton = document.querySelector('.btn-location');
+
 const mapDiv = document.querySelector('#map');
 
 // -----------------------------------------PAGE RESPONSIVNESS-----------------------------
@@ -77,10 +79,10 @@ const generateWeatherMarkup = function (weather) {
     </div>`;
 };
 
-const getWeather = async function (city) {
+const getWeather = async function (city, country) {
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f92e96d37e2400c229247a58bb6f0f0f&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=f92e96d37e2400c229247a58bb6f0f0f&units=metric`
     );
     const body = await response.json();
 
@@ -97,7 +99,7 @@ const getWeather = async function (city) {
     };
     //Now div with class weather-container should exist because of MainPageMarkup
     const weatherContainer = document.querySelector('.weather-container');
-
+    console.log(body);
     weatherContainer.insertAdjacentHTML(
       'beforeend',
       generateWeatherMarkup(weather)
@@ -183,6 +185,19 @@ const sortCountriesAlphabetically = function (listOfItems) {
   return listOfItems;
 };
 
+const loadCountry = function (country, latlang) {
+  countryStats.innerHTML = '';
+  countryStats.insertAdjacentHTML(
+    'afterbegin',
+    generateMainPageMarkup(country)
+  );
+  // Fetch and insert Weather Info
+  getWeather(country.capital[0], country.altSpellings[0]);
+
+  // Set map view
+  map.setView([latlang[0], latlang[1]], 6);
+};
+
 const generateListOfCountries = async function () {
   try {
     const response = await fetch('https://restcountries.com/v3.1/all');
@@ -217,19 +232,7 @@ const generateListOfCountries = async function () {
       const selectedCountry = countries.find(
         (country) => country.name.common === nameOfSelectedCountry
       );
-      console.log(selectedCountry);
-      // Clear html and insert new one on click (Main info)
-      countryStats.innerHTML = '';
-      countryStats.insertAdjacentHTML(
-        'afterbegin',
-        generateMainPageMarkup(selectedCountry)
-      );
-      // Fetch and insert Weather Info
-      getWeather(selectedCountry.capital[0]);
-
-      // Set map view
-      const { latlng } = selectedCountry;
-      map.setView([latlng[0], latlng[1]], 7);
+      loadCountry(selectedCountry, selectedCountry.latlng);
     });
   } catch (error) {
     console.error(error);
@@ -237,3 +240,43 @@ const generateListOfCountries = async function () {
 };
 
 generateListOfCountries();
+
+// ---------------------------------GET CLIENT LOCATION ----------------------------
+// Promisyfying getting current location
+
+const getLocation = () => {
+  return new Promise((resolve, reject) => {
+    window.navigator.geolocation.getCurrentPosition(
+      (succes) => resolve(succes),
+      (error) => reject(error)
+    );
+  });
+};
+
+const showUserLocation = async function () {
+  try {
+    const location = await getLocation();
+
+    const { latitude: lat, longitude: long } = location.coords;
+
+    const clientsCountryRequest = await fetch(
+      `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${long}&apiKey=10d3706a01ec4cc1a9f0432a5727be2b`
+    );
+    const clientsCountryResponse = await clientsCountryRequest.json();
+    const clientsCountryName =
+      clientsCountryResponse.features[0].properties.country;
+
+    const country = await fetch(
+      `https://restcountries.com/v3.1/name/${clientsCountryName}`
+    );
+    const countryResponse = await country.json();
+
+    loadCountry(countryResponse[0], countryResponse[0].latlng);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+locationButton.addEventListener('click', () => {
+  showUserLocation();
+});
