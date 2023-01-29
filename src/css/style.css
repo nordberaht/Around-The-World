@@ -47,7 +47,7 @@ COLORS:
   --color-shade3: #b39776;
 
   --color-gray-primary: #555;
-  --color-gray-secondary: #dee2e6;
+  --color-gray-secondary: #bbbbbb;
   --color-gray-light: #eee;
 }
 
@@ -205,27 +205,11 @@ body {
   height: 2rem;
 }
 .search-bar {
+  position: relative;
   width: 40%;
   display: flex;
   align-items: center;
   position: relative;
-}
-
-.search-bar_button {
-  position: absolute;
-  right: 0;
-  transform: translateX(-0.7rem);
-  font-size: 1rem;
-  padding: 0.8rem 1.2rem;
-  border-radius: 100px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  background-color: var(--color-primary);
-  color: var(--color-gray-primary);
-  transition: 0.5s;
-}
-.search-bar_button:hover {
-  background-color: var(--color-shade1);
 }
 
 .search-bar_input {
@@ -236,6 +220,58 @@ body {
   width: 100%;
   font-size: 1.6rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.11);
+}
+
+.search-bar_input::placeholder {
+  opacity: 0.5;
+}
+
+/* SEARCH RESULTS */
+
+.search-results--container {
+  position: absolute;
+  top: 115%;
+  width: 100%;
+  /* height: 8rem; */
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 5px;
+  z-index: 500;
+}
+
+.search-results {
+  flex: 1 0 19.2rem;
+  overflow-y: auto;
+  position: relative;
+}
+
+.country-card_search {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem;
+}
+
+.country-card_search:hover {
+  background-color: var(--color-tint8);
+}
+
+.country-card_search--flag {
+  height: 4rem;
+  width: 6rem;
+}
+
+.country-card_search--country_name {
+  font-size: 1.8rem;
+}
+
+.no-results {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.8rem;
 }
 
 /* -------------- ASIDE -------------- */
@@ -333,6 +369,15 @@ body {
 }
 .country-stats {
   padding: 3.2rem;
+}
+
+.first-view {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.2rem;
+  color: var(--color-gray-primary);
 }
 
 .country-name-flag {
@@ -496,9 +541,6 @@ body {
   }
   .search-bar_input {
     height: 4.32rem;
-  }
-  .search-bar_button {
-    font-size: 1.2rem;
   }
   .heading {
     padding: 0 2.4rem 0 2.4rem;

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css" />
 
     <!-- SCRIPT -->
-    <script defer type="module" src="./src/js/controller.js"></script>
+    <script type="module" src="./src/js/controller.js"></script>
     <title>Around the World</title>
   </head>
   <body>
@@ -63,11 +63,27 @@
             src="./node_modules/ionicons/dist/svg/locate-outline.svg"
             alt=""
           />
-          <!-- <ion-icon class="location-icon" name="locate-outline"></ion-icon> -->
         </button>
         <div class="search-bar">
-          <input class="search-bar_input" type="text" maxlength="40" />
-          <button class="btn search-bar_button">Search</button>
+          <input
+            class="search-bar_input"
+            type="text"
+            maxlength="40"
+            placeholder="country name"
+          />
+
+          <div class="search-results--container">
+            <!-- <ul class="search-results">
+              <li class="country-card_search">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_the_Taliban.svg"
+                  alt=""
+                  class="country-card_search--flag"
+                />
+                <p class="country-card_search--country_name">Poland</p>
+              </li>
+            </ul> -->
+          </div>
         </div>
       </header>
 
@@ -77,10 +93,6 @@
             <!-- <li class="country-card">
               <img src="https://flagcdn.com/gd.svg" alt="" />
               <h3 class="country-card-name">United States Of America</h3>
-            </li>
-            <li class="country-card">
-              <img src="https://flagcdn.com/gd.svg" alt="" />
-              <h3 class="country-card-name">Grenada</h3>
             </li> -->
           </ul>
         </div>
@@ -107,6 +119,9 @@
       </aside>
       <main class="country">
         <div class="country-stats">
+          <div class="first-view">
+            <h3>Search country :)</h3>
+          </div>
           <!-- <div class="country-name-flag">
             <img
               class="country-name-flag_flag"
