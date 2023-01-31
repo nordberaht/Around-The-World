@@ -1,5 +1,8 @@
 import { TIMEOUT_SECS } from './config';
 
+import 'core-js';
+import 'regenerator-runtime';
+
 const timeout = function (s) {
   return new Promise((_, reject) => {
     setTimeout(() => {

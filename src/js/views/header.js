@@ -20,7 +20,10 @@ class Header {
 
   // PUBLISHER
   addHandlerRenderCountry(handler) {
-    this._resultsContainer.addEventListener('click', handler);
+    this._resultsContainer.addEventListener(
+      'click',
+      handler.bind(null, this._searchBarInput)
+    );
   }
 
   // PUBLISHER

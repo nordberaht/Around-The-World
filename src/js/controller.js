@@ -5,19 +5,18 @@ import entryPage from './views/entryPage.js';
 import countriesListView from './views/countriesListView.js';
 import header from './views/header.js';
 
-// TO DO
-//1. Get rid of DOM elements from the controler DONE
-//2. Implement Search bar function DONE
-//3. Nice error handling
-//4. Spinner
+import 'core-js';
+import 'regenerator-runtime';
 
 // Render country on the main page
 const controlCountry = async function (country) {
   try {
-    //render spinner
+    countryView.renderSpinner();
     await model.loadCountry(country);
     const [lat, lng] = model.state.country.latlng;
-    countryView.setMapView(lat, lng, 6);
+    if (model.state.country.area < 1) countryView.setMapView(lat, lng, 10);
+    if (model.state.country.area > 1000) countryView.setMapView(lat, lng, 5);
+    else countryView.setMapView(lat, lng, 6);
     countryView.render(model.state.country);
   } catch (error) {
     console.error(`${error}`);
@@ -34,6 +33,7 @@ const controlListOfCountries = async function () {
     listView.render(countries);
   } catch (error) {
     console.error(error);
+    countryView.renderError();
   }
 };
 
@@ -49,7 +49,9 @@ const controlSlideBar = function (allCountries) {
 };
 
 // SUBSCRIBER - countriesListView & header
-const renderCountry = function (e) {
+const renderCountry = function (searchBar, e) {
+  //clear input field if new country will be rendered
+  searchBar.value = '';
   e.preventDefault();
   const selectedCountryElement = e.target.closest('li');
   if (!selectedCountryElement) return;
@@ -63,10 +65,12 @@ const renderCountry = function (e) {
 // ---------------------------------GET CLIENT LOCATION ----------------------------
 const showUsersCountry = async function () {
   try {
+    countryView.renderSpinner();
     const countryName = await model.getClientLocation();
     controlCountry(countryName);
   } catch (error) {
     console.error(error);
+    countryView.renderError(error);
   }
 };
 
@@ -81,7 +85,7 @@ const showResults = function (e) {
 // SUBSCRIBER - header
 const showResultWindow = function (searchBar, searchResultMarkup, e) {
   const phrase = e.target.value;
-  //if there is already generated results windowd do not generate another one
+  //if there is already generated results window do not generate another one
   if (!searchBar.children[0]?.classList.contains('search-results'))
     searchBar.insertAdjacentHTML('beforeend', searchResultMarkup);
   //if there was already an input show results of search
@@ -89,7 +93,7 @@ const showResultWindow = function (searchBar, searchResultMarkup, e) {
 };
 
 // SUBSCRIBER - header
-const hideResultWindow = function (searchBar, e) {
+const hideResultWindow = function (resultsContainer, e) {
   const eventTarget = e.target;
   //hide results window if there was a click anywhere else than on results window
   //or search bar
@@ -99,8 +103,8 @@ const hideResultWindow = function (searchBar, e) {
   )
     return;
   // If click was on the result window then abort and execute hiding in other place
-  if (searchBar.children.length > 0)
-    searchBar.removeChild(searchBar.children[0]);
+  if (resultsContainer.children.length > 0)
+    resultsContainer.removeChild(resultsContainer.children[0]);
 };
 
 // -------------------------------INITIALIZE---------------------

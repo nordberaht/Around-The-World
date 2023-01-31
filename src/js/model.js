@@ -7,6 +7,9 @@ import {
 } from './config';
 import { getJSON, sortCountriesAlphabetically, getLocation } from './helpers';
 
+import 'core-js';
+import 'regenerator-runtime';
+
 export const state = {
   listOfCountries: [],
   country: {},
@@ -29,6 +32,7 @@ export const loadAllCountries = async function () {
     state.listOfCountries = countries;
   } catch (error) {
     console.error(`${error}`);
+    throw error;
   }
 };
 
@@ -37,13 +41,12 @@ export const loadCountry = async function (countryName) {
     const country = state.listOfCountries.find(
       (country) => country.name.common === countryName
     );
-
     state.country = {
       flag: country.flags.svg,
       name: country.name.common,
       capital: country.capital?.[0] ?? 'none',
-      area: (country.area / 1000).toFixed(2),
-      population: (country.population / 1000000).toFixed(2),
+      area: country.area,
+      population: country.population,
 
       currency: country?.currencies
         ? Object.values(country.currencies).reduce((prev, cur, index) => {
@@ -69,14 +72,13 @@ export const loadCountry = async function (countryName) {
     };
 
     const { capital: city, name: countryOfCountry, latlng } = state.country;
-    const params = city
-      ? `q=${city},${countryOfCountry}`
-      : `lat=${latlng[0]}&lon=${latlng[1]}`;
-
+    const params =
+      city !== 'none'
+        ? `q=${city},${countryOfCountry}`
+        : `lat=${latlng[0]}&lon=${latlng[1]}`;
     const body = await getJSON(
       `${WEATHER_API_URL}${params}&appid=${WEATHER_API_KEY}&units=metric`
     );
-
     state.country.weather = {
       icon: body.weather[0].icon,
       temp: +body.main.temp.toFixed(0),
@@ -107,5 +109,6 @@ export const getClientLocation = async function () {
     return clientsCountryName;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 class CountryView extends View {
   _parentElement = document.querySelector('.country-stats');
   _mapElement = L.map('map');
+  _errorMessage = `Ops, something went wrong. Try again later`;
 
   generateMap() {
     this._mapElement.setView([0, 0], 2);
@@ -29,6 +30,12 @@ class CountryView extends View {
     showListButton.addEventListener('click', handler.bind(null, allCountries));
   }
 
+  _fromatData(data) {
+    if (data < 1000) return `${data}`;
+    if (data > 1000000) return `${(data / 1000000).toFixed(2)} mln`;
+    return `${(data / 1000).toFixed(2)}k`;
+  }
+
   _generateMarkup() {
     return `<div class="country-name-flag">
   <img
@@ -44,10 +51,10 @@ class CountryView extends View {
       <p><span>Capital: </span>${this._data.capital}</p>
     </li>
     <li class="country-feature">
-      <p><span>Area: </span>${this._data.area}k km²</p>
+      <p><span>Area: </span>${this._fromatData(this._data.area)} km²</p>
     </li>
     <li class="country-feature">
-      <p><span>Population: </span>${this._data.population} mln</p>
+      <p><span>Population: </span>${this._fromatData(this._data.population)}</p>
     </li>
     <li class="country-feature">
       <p><span>Currencies: </span>${this._data?.currency}</p>

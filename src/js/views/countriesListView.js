@@ -1,6 +1,7 @@
 import View from './view';
 class CountriesListView extends View {
   _parentElement = document.querySelector('.countries-list');
+  _searchBar = document.querySelector('.search-bar_input');
 
   _generateMarkup() {
     return this._data.map((item) => this._cardMarkup(item)).join('');
@@ -15,7 +16,10 @@ class CountriesListView extends View {
 
   // PUBLISHER
   addHandlerRenderCountry(handler) {
-    this._parentElement.addEventListener('click', handler);
+    this._parentElement.addEventListener(
+      'click',
+      handler.bind(null, this._searchBar)
+    );
   }
 }
 
