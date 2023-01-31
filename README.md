@@ -1,7 +1,5 @@
 ## AROUND THE WORLD
 
----
-
 #### Technologies
 
 ---
